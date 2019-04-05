@@ -114,6 +114,19 @@ Path dijkstrasAlgorithm(RoadGraph& graph, Vertex* start, Vertex* end) {
         Vertex* curVertex = pQueue.dequeue();
         visited.add(curVertex);
         curVertex->setColor(GREEN);
+
+        Set<Vertex*> neighbors = graph.getNeighbors(curVertex);
+        for(Vertex* curNeighbor : neighbors){
+            if(!visited.contains(curNeighbor)){
+                Edge* curEdge = graph.getEdge(curVertex, curNeighbor);
+                cout << "** Edge of " << curNeighbor->name << " " << curEdge->toString() << endl;
+                if(pQueueDataSet.contains(curNeighbor)){
+                    // updated the pqueue data
+                }else{
+                    // its brand new neighbor
+                }
+            }
+        }
     }
 
     Path emptyPath;
