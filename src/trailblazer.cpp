@@ -31,6 +31,7 @@ Path breadthFirstSearch(RoadGraph& graph, Vertex* start, Vertex* end) {
         path.add(start);
         return path;
     }
+
     predecesorMap.add(start->name, start);
     queue.enqueue(start);
 
@@ -59,14 +60,16 @@ Path breadthFirstSearch(RoadGraph& graph, Vertex* start, Vertex* end) {
 }
 
 Path buildPath(Map<string, Vertex*>& predecesorMap,Vertex* start ,Vertex* end){
-    for(string key : predecesorMap){
-        cout << "$$$$ Map Has [Key] = " << key << " [Value] = " << predecesorMap.get(key)->name << endl;
+    if(!predecesorMap.containsKey(end->name)){
+        Path path;
+        return path;
     }
 
     Stack<Vertex*> pathStack;
     Path path;
     pathStack.push(end); // push first the end vertex
     Vertex* predecesor = predecesorMap.get(end->name);
+
     while(true){
 
         pathStack.push(predecesor);
