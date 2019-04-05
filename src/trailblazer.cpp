@@ -49,29 +49,38 @@ Path breadthFirstSearch(RoadGraph& graph, Vertex* start, Vertex* end) {
             }
         }
     }
-    cout << "****** Complted " << endl;
+
     return buildPath(predecesorMap,start ,end);
 }
 
 Path buildPath(Map<string, Vertex*>& predecesorMap,Vertex* start ,Vertex* end){
+    for(string key : predecesorMap){
+        cout << "$$$$ Map Has [Key] = " << key << " [Value] = " << predecesorMap.get(key)->name << endl;
+    }
     Stack<Vertex*> pathStack;
     Path path;
-    pathStack.push(end);
+    pathStack.push(end); // push first the end vertex
     Vertex* predecesor = predecesorMap.get(end->name);
     while(true){
-        string predecesorName = predecesor->name;
+
         pathStack.push(predecesor);
-        predecesor = predecesorMap.get(predecesorName);
+        predecesor = predecesorMap.get(predecesor->name);
+
         if(predecesor == start){
-            pathStack.push(start);
+            if(pathStack.peek()!= start){
+                pathStack.push(start);
+            }
             break;
         }
+
+
     }
     while (!pathStack.isEmpty()) {
         Vertex* pathNode = pathStack.pop();
         cout << "** Path = " << pathNode->name << endl;
         path.add(pathNode);
     }
+
     return path;
 }
 
