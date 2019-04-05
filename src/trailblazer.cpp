@@ -45,9 +45,10 @@ Path breadthFirstSearch(RoadGraph& graph, Vertex* start, Vertex* end) {
 
             Set<Vertex*> neighbors = graph.getNeighbors(currentVertex); // find all neighbors of the current vertex
             for(Vertex* curNeighbor : neighbors){
-                curNeighbor->setColor(YELLOW); // mark each neighbor to be yellow
+
                 if(!visitedNeighbors.contains(curNeighbor)){ // is this neighbor visited before?
                     queue.enqueue(curNeighbor); // if not then add this neighbor to the queue
+                    curNeighbor->setColor(YELLOW);
                     if(!predecesorMap.containsKey(curNeighbor->name)){ // is this neighbor already has a predecessor?
                         predecesorMap.add(curNeighbor->name, currentVertex); // if not make the current vertex to its precessor
                     }
@@ -97,13 +98,33 @@ Path buildPath(Map<string, Vertex*>& predecesorMap,Vertex* start ,Vertex* end){
 
 
 Path dijkstrasAlgorithm(RoadGraph& graph, Vertex* start, Vertex* end) {
-    // TODO: implement this function; remove these comments
-    //       (The function body code provided below is just a stub that returns
-    //        an empty vector so that the overall project will compile.
-    //        You should remove that code and replace it with your implementation.)
+    PriorityQueue<Vertex*> pQueue;
+    Set<Vertex*> visited;
+    Set<Vertex*> pQueueDataSet;
+    Map<string, Vertex*> predecesorMap;
+
+    if(start == end){
+        Path path;
+        path.add(start);
+        return path;
+    }
+
+    pQueue.enqueue(start, 0.0);
+    while(!pQueue.isEmpty()){
+        Vertex* curVertex = pQueue.dequeue();
+        visited.add(curVertex);
+        curVertex->setColor(GREEN);
+    }
+
     Path emptyPath;
     return emptyPath;
 }
+
+
+
+
+
+
 
 
 Path aStar(RoadGraph& graph, Vertex* start, Vertex* end) {
