@@ -67,11 +67,10 @@ Path buildPath(Map<string, Vertex*>& predecesorMap,Vertex* start ,Vertex* end){
 
     Stack<Vertex*> pathStack;
     Path path;
-    pathStack.push(end); // push first the end vertex
+    pathStack.push(end);
     Vertex* predecesor = predecesorMap.get(end->name);
 
     while(true){
-
         pathStack.push(predecesor);
         predecesor = predecesorMap.get(predecesor->name);
 
@@ -84,7 +83,6 @@ Path buildPath(Map<string, Vertex*>& predecesorMap,Vertex* start ,Vertex* end){
     }
     while (!pathStack.isEmpty()) {
         Vertex* pathNode = pathStack.pop();
-        cout << "** Path = " << pathNode->name << endl;
         path.add(pathNode);
     }
     return path;
