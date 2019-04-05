@@ -26,6 +26,11 @@ Path breadthFirstSearch(RoadGraph& graph, Vertex* start, Vertex* end) {
     Set<Vertex*> visitedNeighbors;
     Map<string, Vertex*> predecesorMap;
 
+    if(start == end){
+        Path path;
+        path.add(start);
+        return path;
+    }
     predecesorMap.add(start->name, start);
     queue.enqueue(start);
 
@@ -57,6 +62,7 @@ Path buildPath(Map<string, Vertex*>& predecesorMap,Vertex* start ,Vertex* end){
     for(string key : predecesorMap){
         cout << "$$$$ Map Has [Key] = " << key << " [Value] = " << predecesorMap.get(key)->name << endl;
     }
+
     Stack<Vertex*> pathStack;
     Path path;
     pathStack.push(end); // push first the end vertex
@@ -72,15 +78,12 @@ Path buildPath(Map<string, Vertex*>& predecesorMap,Vertex* start ,Vertex* end){
             }
             break;
         }
-
-
     }
     while (!pathStack.isEmpty()) {
         Vertex* pathNode = pathStack.pop();
         cout << "** Path = " << pathNode->name << endl;
         path.add(pathNode);
     }
-
     return path;
 }
 
