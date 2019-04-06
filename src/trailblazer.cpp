@@ -93,14 +93,10 @@ Path buildPath(Map<string, Vertex*>& predecesorMap,Vertex* start ,Vertex* end){
 
 
 
-
-
-
-
 Path dijkstrasAlgorithm(RoadGraph& graph, Vertex* start, Vertex* end) {
     PriorityQueue<Vertex*> pQueue;
     Set<Vertex*> visited;
-    Set<Vertex*> pQueueDataSet;
+    Map<string, Vertex*> pQueueDataMap;
     Map<string, Vertex*> predecesorMap;
 
     if(start == end){
@@ -109,28 +105,43 @@ Path dijkstrasAlgorithm(RoadGraph& graph, Vertex* start, Vertex* end) {
         return path;
     }
 
+    predecesorMap.add(start->name, start);
     pQueue.enqueue(start, 0.0);
     while(!pQueue.isEmpty()){
         Vertex* curVertex = pQueue.dequeue();
         visited.add(curVertex);
         curVertex->setColor(GREEN);
+        if(curVertex == end) break;
 
         Set<Vertex*> neighbors = graph.getNeighbors(curVertex);
         for(Vertex* curNeighbor : neighbors){
             if(!visited.contains(curNeighbor)){
-                Edge* curEdge = graph.getEdge(curVertex, curNeighbor);
-                cout << "** Edge of " << curNeighbor->name << " " << curEdge->toString() << endl;
-                if(pQueueDataSet.contains(curNeighbor)){
-                    // updated the pqueue data
+                Edge* curNeighborEdge = graph.getEdge(curVertex, curNeighbor);
+                double newCost = curVertex->cost + curNeighborEdge->cost;
+
+                if(pQueueDataMap.containsKey(curNeighbor->name)){
+                    Vertex* existedNeighbor = pQueueDataMap.get(curNeighbor->name);
+                    double oldCost = existedNeighbor->cost;
+
+                    if(newCost < oldCost){
+                        pQueue.changePriority(existedNeighbor, newCost);
+                        existedNeighbor->cost = newCost;
+                        pQueueDataMap.add(existedNeighbor->name,existedNeighbor);
+                        predecesorMap.add(existedNeighbor->name, curVertex);
+                    }
                 }else{
                     // its brand new neighbor
+                    curNeighbor->cost = newCost;
+                    pQueue.enqueue(curNeighbor, newCost);
+                    curNeighbor->setColor(YELLOW);
+                    pQueueDataMap.add(curNeighbor->name,curNeighbor);
+                    predecesorMap.add(curNeighbor->name, curVertex);
                 }
             }
         }
     }
 
-    Path emptyPath;
-    return emptyPath;
+    return buildPath(predecesorMap, start, end);
 }
 
 

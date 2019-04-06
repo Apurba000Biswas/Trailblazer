@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.8.1, 2019-04-05T22:44:02. -->
+<!-- Written by QtCreator 4.8.1, 2019-04-06T17:28:35. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -308,7 +308,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/Study/CS 106B 18wi/Course/Week-8/HW - 7/build-Trailblazer-Desktop_Qt_5_11_2_MinGW_32bit-Debug</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>
