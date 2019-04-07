@@ -13,16 +13,16 @@ Path searching was implemented by four diffrent algorithms:
 My Sollution - [Breadth-first search](https://github.com/Apurba000Biswas/Trailblazer/blob/master/src/trailblazer.cpp#L29)
 ##### Running Sollution:
 <div align="center">
-  <img src ="img/bfs_middle_earth.png" width ="800">
+  <img src ="img/bfs_middle_earth.png" width ="900">
 </div>
 <div align="center">
-  <img src ="img/bfs_stanford.png" width ="800">
+  <img src ="img/bfs_stanford.png" width ="900">
 </div>
 <div align="center">
-  <img src ="img/bfs_usa.png" width ="800">
+  <img src ="img/bfs_usa.png" width ="900">
 </div>
 <div align="center">
-  <img src ="img/bfs_istanbul.png" width ="800">
+  <img src ="img/bfs_istanbul.png" width ="900">
 </div>
 
 Finds a shortest path that has smallest number of nodes.
