@@ -1,7 +1,3 @@
-// This is the CPP file you will edit and turn in.
-// Also remove these comments here and add your own, along with
-// comments on every function and on complex code sections.
-// TODO: write comment header for this file; remove this comment
 
 #include "trailblazer.h"
 #include "queue.h"
@@ -19,7 +15,9 @@ typedef Vector<Vertex*> Path;
 // the minimum difference for an alternate route
 const double SUFFICIENT_DIFFERENCE = 0.2;
 Path buildPath(Map<string, Vertex*>& predecesorMap,Vertex* start ,Vertex* end);
-
+double heuristic(RoadGraph& graph, Vertex* start, Vertex* end);
+void dijkastraAstarHelper(RoadGraph& graph, Vertex* start,
+                                          Vertex* end, bool isDijksatra, Map<string, Vertex*>& predecesorMap);
 
 Path breadthFirstSearch(RoadGraph& graph, Vertex* start, Vertex* end) {
     Queue<Vertex*> queue;
@@ -36,21 +34,21 @@ Path breadthFirstSearch(RoadGraph& graph, Vertex* start, Vertex* end) {
     queue.enqueue(start);
 
     while(!queue.isEmpty()){
-        Vertex* currentVertex = queue.dequeue();// visiting the first vertex in the queue
-        if(currentVertex == end) break; // when we reach our destination index, break the loop
+        Vertex* currentVertex = queue.dequeue();
+        if(currentVertex == end) break;
 
-        if(!visitedNeighbors.contains(currentVertex)){ // is this vertex visited before?
-            visitedNeighbors.add(currentVertex);// make it visited
-            currentVertex->setColor(GREEN); // set its color to be green
+        if(!visitedNeighbors.contains(currentVertex)){
+            visitedNeighbors.add(currentVertex);
+            currentVertex->setColor(GREEN);
 
-            Set<Vertex*> neighbors = graph.getNeighbors(currentVertex); // find all neighbors of the current vertex
+            Set<Vertex*> neighbors = graph.getNeighbors(currentVertex);
             for(Vertex* curNeighbor : neighbors){
 
-                if(!visitedNeighbors.contains(curNeighbor)){ // is this neighbor visited before?
-                    queue.enqueue(curNeighbor); // if not then add this neighbor to the queue
+                if(!visitedNeighbors.contains(curNeighbor)){
+                    queue.enqueue(curNeighbor);
                     curNeighbor->setColor(YELLOW);
-                    if(!predecesorMap.containsKey(curNeighbor->name)){ // is this neighbor already has a predecessor?
-                        predecesorMap.add(curNeighbor->name, currentVertex); // if not make the current vertex to its precessor
+                    if(!predecesorMap.containsKey(curNeighbor->name)){
+                        predecesorMap.add(curNeighbor->name, currentVertex);
                     }
                 }
             }
@@ -94,10 +92,6 @@ Path buildPath(Map<string, Vertex*>& predecesorMap,Vertex* start ,Vertex* end){
 
 
 Path dijkstrasAlgorithm(RoadGraph& graph, Vertex* start, Vertex* end) {
-    PriorityQueue<Vertex*> pQueue;
-    Set<Vertex*> visited;
-    Map<string, Vertex*> pQueueDataMap;
-    Map<string, Vertex*> predecesorMap;
 
     if(start == end){
         Path path;
@@ -105,8 +99,22 @@ Path dijkstrasAlgorithm(RoadGraph& graph, Vertex* start, Vertex* end) {
         return path;
     }
 
+    Map<string, Vertex*> predecesorMap;
+    dijkastraAstarHelper(graph, start, end, true, predecesorMap);
+    return buildPath(predecesorMap, start, end);
+}
+
+
+void dijkastraAstarHelper(RoadGraph& graph, Vertex* start,
+                                          Vertex* end, bool isDijksatra,
+                                          Map<string, Vertex*>& predecesorMap){
+    PriorityQueue<Vertex*> pQueue;
+    Set<Vertex*> visited;
+    Set<Vertex*> pQueueDataSet;
+
     predecesorMap.add(start->name, start);
-    pQueue.enqueue(start, 0.0);
+    double priority = (isDijksatra)? 0.0 : heuristic(graph, start, end);
+    pQueue.enqueue(start, priority);
     while(!pQueue.isEmpty()){
         Vertex* curVertex = pQueue.dequeue();
         visited.add(curVertex);
@@ -119,45 +127,52 @@ Path dijkstrasAlgorithm(RoadGraph& graph, Vertex* start, Vertex* end) {
                 Edge* curNeighborEdge = graph.getEdge(curVertex, curNeighbor);
                 double newCost = curVertex->cost + curNeighborEdge->cost;
 
-                if(pQueueDataMap.containsKey(curNeighbor->name)){
-                    Vertex* existedNeighbor = pQueueDataMap.get(curNeighbor->name);
-                    double oldCost = existedNeighbor->cost;
+                if(pQueueDataSet.contains(curNeighbor)){
+                    double oldCost = curNeighbor->cost;
 
                     if(newCost < oldCost){
-                        pQueue.changePriority(existedNeighbor, newCost);
-                        existedNeighbor->cost = newCost;
-                        pQueueDataMap.add(existedNeighbor->name,existedNeighbor);
-                        predecesorMap.add(existedNeighbor->name, curVertex);
+                        curNeighbor->cost = newCost;
+                        priority = (isDijksatra) ? newCost : (newCost + heuristic(graph, curNeighbor, end));
+                        pQueue.changePriority(curNeighbor, priority);
+
+                        pQueueDataSet.add(curNeighbor);
+                        predecesorMap.add(curNeighbor->name, curVertex);
                     }
                 }else{
                     // its brand new neighbor
                     curNeighbor->cost = newCost;
-                    pQueue.enqueue(curNeighbor, newCost);
+                    priority = (isDijksatra) ? newCost : (newCost + heuristic(graph, curNeighbor, end));
+                    pQueue.enqueue(curNeighbor, priority);
+                    pQueueDataSet.add(curNeighbor);
                     curNeighbor->setColor(YELLOW);
-                    pQueueDataMap.add(curNeighbor->name,curNeighbor);
                     predecesorMap.add(curNeighbor->name, curVertex);
                 }
             }
         }
     }
+}
+
+
+
+Path aStar(RoadGraph& graph, Vertex* start, Vertex* end) {
+
+    if(start == end){
+        Path path;
+        path.add(start);
+        return path;
+    }
+
+    Map<string, Vertex*> predecesorMap;
+    dijkastraAstarHelper(graph, start, end, false , predecesorMap);
 
     return buildPath(predecesorMap, start, end);
 }
 
 
-
-
-
-
-
-
-Path aStar(RoadGraph& graph, Vertex* start, Vertex* end) {
-    // TODO: implement this function; remove these comments
-    //       (The function body code provided below is just a stub that returns
-    //        an empty vector so that the overall project will compile.
-    //        You should remove that code and replace it with your implementation.)
-    Path emptyPath;
-    return emptyPath;
+double heuristic(RoadGraph& graph, Vertex* start, Vertex* end){
+    double crowFlyDistance = graph.getCrowFlyDistance(start, end);
+    double maxRoadSpeed = graph.getMaxRoadSpeed();
+    return crowFlyDistance/maxRoadSpeed;
 }
 
 Path alternativeRoute(RoadGraph& graph, Vertex* start, Vertex* end) {
