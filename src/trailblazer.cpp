@@ -17,7 +17,9 @@ const double SUFFICIENT_DIFFERENCE = 0.2;
 Path buildPath(Map<string, Vertex*>& predecesorMap,Vertex* start ,Vertex* end);
 double heuristic(RoadGraph& graph, Vertex* start, Vertex* end);
 void dijkastraAstarHelper(RoadGraph& graph, Vertex* start,
-                                          Vertex* end, bool isDijksatra, Map<string, Vertex*>& predecesorMap);
+                                          Vertex* end, bool isDijksatra, Map<string,
+                                          Vertex*>& predecesorMap, Edge* ignoreEdge);
+void buildEdgesFromBestPath(Vector<Edge*>& bestPathEdges, Path& bestPath, RoadGraph& graph);
 
 Path breadthFirstSearch(RoadGraph& graph, Vertex* start, Vertex* end) {
     Queue<Vertex*> queue;
@@ -100,14 +102,15 @@ Path dijkstrasAlgorithm(RoadGraph& graph, Vertex* start, Vertex* end) {
     }
 
     Map<string, Vertex*> predecesorMap;
-    dijkastraAstarHelper(graph, start, end, true, predecesorMap);
+    dijkastraAstarHelper(graph, start, end, true, predecesorMap, nullptr);
     return buildPath(predecesorMap, start, end);
 }
 
 
 void dijkastraAstarHelper(RoadGraph& graph, Vertex* start,
                                           Vertex* end, bool isDijksatra,
-                                          Map<string, Vertex*>& predecesorMap){
+                                          Map<string, Vertex*>& predecesorMap,
+                                          Edge* ignoreEdge){
     PriorityQueue<Vertex*> pQueue;
     Set<Vertex*> visited;
     Set<Vertex*> pQueueDataSet;
@@ -125,6 +128,7 @@ void dijkastraAstarHelper(RoadGraph& graph, Vertex* start,
         for(Vertex* curNeighbor : neighbors){
             if(!visited.contains(curNeighbor)){
                 Edge* curNeighborEdge = graph.getEdge(curVertex, curNeighbor);
+                if(curNeighborEdge == ignoreEdge)continue;
                 double newCost = curVertex->cost + curNeighborEdge->cost;
 
                 if(pQueueDataSet.contains(curNeighbor)){
@@ -163,7 +167,7 @@ Path aStar(RoadGraph& graph, Vertex* start, Vertex* end) {
     }
 
     Map<string, Vertex*> predecesorMap;
-    dijkastraAstarHelper(graph, start, end, false , predecesorMap);
+    dijkastraAstarHelper(graph, start, end, false , predecesorMap, nullptr);
 
     return buildPath(predecesorMap, start, end);
 }
@@ -176,11 +180,45 @@ double heuristic(RoadGraph& graph, Vertex* start, Vertex* end){
 }
 
 Path alternativeRoute(RoadGraph& graph, Vertex* start, Vertex* end) {
-    // TODO: implement this function; remove these comments
-    //       (The function body code provided below is just a stub that returns
-    //        an empty vector so that the overall project will compile.
-    //        You should remove that code and replace it with your implementation.)
-    Path emptyPath;
-    return emptyPath;
+    if(start == end){
+        Path path;
+        path.add(start);
+        return path;
+    }
+
+    Map<string, Vertex*> predecesorMap;
+    dijkastraAstarHelper(graph, start, end, false , predecesorMap, nullptr);
+
+    Path bestPath = buildPath(predecesorMap, start, end);
+    Vector<Edge*> bestPathEdges;
+    buildEdgesFromBestPath(bestPathEdges, bestPath, graph);
+
+    Vector<Path> alterNativePaths;
+    for(Edge* curEdge : bestPathEdges){
+        predecesorMap.clear();
+        dijkastraAstarHelper(graph, start, end, false , predecesorMap, curEdge);
+        alterNativePaths.add(buildPath(predecesorMap, start, end));
+    }
+
+    for(int i=0; i< alterNativePaths.size(); i++){
+        Path path = alterNativePaths.get(i);
+        cout << "** Path NO : " << i <<" SKIPING:" << bestPathEdges.get(i)->start->name
+             << " -- " << bestPathEdges.get(i)->end->name << endl;
+        for(int j=0; j < path.size(); j++){
+            cout << "    NODE : " << path.get(j)->name << endl;
+        }
+    }
+
+
+    return alterNativePaths.get(0);
+}
+
+void buildEdgesFromBestPath(Vector<Edge*>& bestPathEdges, Path& bestPath, RoadGraph& graph){
+    for(int i=0; i < (bestPath.size()-1); i++){
+        Vertex* curPathNode = bestPath.get(i);
+        Vertex* nextPathNode = bestPath.get(i+1);
+        Edge* curEdge = graph.getEdge(curPathNode, nextPathNode);
+        bestPathEdges.add(curEdge);
+    }
 }
 
