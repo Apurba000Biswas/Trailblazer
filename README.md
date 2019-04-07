@@ -13,7 +13,7 @@ Path searching was implemented by four diffrent algorithms:
 My Sollution - [bfs](https://github.com/Apurba000Biswas/Trailblazer/blob/master/src/trailblazer.cpp#L29)
 ##### Running Sollution:
 <div align="center">
-  <img src ="img/bfs_middle_earth.png" width ="700">
+  <img src ="img/bfs_middle_earth.png" width ="800">
 </div>
 
 Finds a shortest path that has smallest number of nodes.
