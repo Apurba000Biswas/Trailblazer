@@ -29,6 +29,16 @@ Finds a shortest path that has smallest number of nodes.
 
 ### 2- Dijkstras Algorithm:
 My Sollution - [Dijkstras](https://github.com/Apurba000Biswas/Trailblazer/blob/master/src/trailblazer.cpp#L97)
+#### Running Sollution:
+<div align="center">
+  <img src ="img/dijkastra_mddle_earth.png" width ="900">
+</div>
+<div align="center">
+  <img src ="img/dijkastra_stanford.png" width ="900">
+</div>
+<div align="center">
+  <img src ="img/dijkastra_usa.png" width ="900">
+</div>
 
 Finds a cheapest path that.
 
