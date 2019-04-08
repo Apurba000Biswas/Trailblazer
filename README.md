@@ -10,6 +10,8 @@ Finds path between two places in a map
 
 Path searching was implemented by four diffrent algorithms:
 ### 1- BFS(Breadth-first search):
+Finds a shortest path that has smallest number of nodes.
+
 My Sollution - [Breadth-first search](https://github.com/Apurba000Biswas/Trailblazer/blob/master/src/trailblazer.cpp#L29)
 #### Running Sollution:
 <div align="center">
@@ -25,9 +27,10 @@ My Sollution - [Breadth-first search](https://github.com/Apurba000Biswas/Trailbl
   <img src ="img/bfs_istanbul.png" width ="900">
 </div>
 
-Finds a shortest path that has smallest number of nodes.
 
 ### 2- Dijkstras Algorithm:
+Finds a cheapest path that.
+
 My Sollution - [Dijkstras](https://github.com/Apurba000Biswas/Trailblazer/blob/master/src/trailblazer.cpp#L97)
 #### Running Sollution:
 <div align="center">
@@ -40,12 +43,25 @@ My Sollution - [Dijkstras](https://github.com/Apurba000Biswas/Trailblazer/blob/m
   <img src ="img/dijkastra_usa.png" width ="900">
 </div>
 
-Finds a cheapest path that.
+
 
 ### 3- A* Search:
-My Sollution - [A_Star](https://github.com/Apurba000Biswas/Trailblazer/blob/master/src/trailblazer.cpp#L160)
-
 Exactly does the dijkstras algorithm dose, onley faster. It Uses a Heuristics to guess the end position's path.
+
+My Sollution - [A_Star](https://github.com/Apurba000Biswas/Trailblazer/blob/master/src/trailblazer.cpp#L160)
+#### Running Sollution:
+<div align="center">
+  <img src ="img/a_star_middle_earth.png" width ="900">
+</div>
+<div align="center">
+  <img src ="img/a_star_stanford.png" width ="900">
+</div>
+<div align="center">
+  <img src ="img/a_star_usa.png" width ="900">
+</div>
+<div align="center">
+  <img src ="img/a_star_istanbul.png" width ="900">
+</div>
 
 ### 4- Alternative Route Search:
 My Sollution - [Alternative Route Search](https://github.com/Apurba000Biswas/Trailblazer/blob/master/src/trailblazer.cpp#L180)
