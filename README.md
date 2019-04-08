@@ -29,7 +29,7 @@ My Sollution - [Breadth-first search](https://github.com/Apurba000Biswas/Trailbl
 
 
 ### 2- Dijkstras Algorithm:
-Finds a cheapest path that.
+Finds a cheapest path that has lowest cost nodes.
 
 My Sollution - [Dijkstras](https://github.com/Apurba000Biswas/Trailblazer/blob/master/src/trailblazer.cpp#L97)
 #### Running Sollution:
@@ -64,7 +64,20 @@ My Sollution - [A_Star](https://github.com/Apurba000Biswas/Trailblazer/blob/mast
 </div>
 
 ### 4- Alternative Route Search:
-My Sollution - [Alternative Route Search](https://github.com/Apurba000Biswas/Trailblazer/blob/master/src/trailblazer.cpp#L180)
-
 Finds an alternative path to reach the end position. It Uses A* / Dijkastras algortihm internally to finds the best alternative path after the orignal best path.(We Assume atleast 20% path should be diffrent than best path found by dijkstra/A* ).
+
+My Sollution - [Alternative Route Search](https://github.com/Apurba000Biswas/Trailblazer/blob/master/src/trailblazer.cpp#L180)
+#### Running Sollution:
+<div align="center">
+  <img src ="img/alternative_middle_earth.png" width ="900">
+</div>
+<div align="center">
+  <img src ="img/alternative_stanford.png" width ="900">
+</div>
+<div align="center">
+  <img src ="img/alternative_usa.png" width ="900">
+</div>
+<div align="center">
+  <img src ="img/alternative_istanbul.png" width ="900">
+</div>
 
